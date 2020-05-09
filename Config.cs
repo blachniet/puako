@@ -23,6 +23,10 @@ namespace puako
                         yield return jobj.ToObject<RedirectDownloader>();
                         break;
 
+                    case "vsix":
+                        yield return jobj.ToObject<VsixDownloader>();
+                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException(
                             $"Unsupported kind: '{kind}'"
