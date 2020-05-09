@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using puako.Downloaders;
@@ -33,7 +34,10 @@ namespace puako
                     version = await downloader.PeekVersionAsync();
                     break;
                 }
-                catch { }
+                catch
+                {
+                    await Task.Delay(RetryDelay);
+                }
             }
 
             // If we were able to peek at the version, have we downloaded it
@@ -54,6 +58,7 @@ namespace puako
                 try
                 {
                     (version, suggestedFileName) = await downloader.DownloadAsync(tempFilePath);
+                    break;
                 }
                 catch
                 {
@@ -63,6 +68,8 @@ namespace puako
                     {
                         throw;
                     }
+
+                    await Task.Delay(RetryDelay);
                 }
             }
 
@@ -99,12 +106,14 @@ namespace puako
         }
 
         private const int RetryCount = 3;
+        private readonly TimeSpan RetryDelay = TimeSpan.FromSeconds(30);
         private readonly IHistoryProvider _history;
         private readonly string _outputDirectory;
         private readonly string _tempDirectory;
         private readonly HttpClient _client = new HttpClient(new HttpClientHandler() 
         {
-            AllowAutoRedirect = false
+            AllowAutoRedirect = false,
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
         });
     }
 }
