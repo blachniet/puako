@@ -20,10 +20,12 @@ deploy:
   api_key:
     secure: MppdkYx5u94SgGc1ip2VUEK5hmYOBKG+huzBvpNJrwANyCa5P3QaEIWgRIwLPzO5j3HN9Eq1CMowPkAhp9hPJotRLoLN1Fe6zPnbHd4K4fwSe1lGzkUS7xJz55m5jFEUP5PRS0oYqU/nJYWCTqNnsMb2Z3t557LwbG4E2dS83i1/oqnXy4ASjaT8BdUDSglWL8tHKvSfsEXai8BsXqV2htjjNFJsbBpg51ptsSYmWmPEbuuGVsHhCxUVpIHM/zwzOreqWitXk7nz02SDDLMxNqev0FLrJwiUg7BWQMaI5kw8YXEANoK/DbXhZoNraNY3+HzmUoD2uByQsUbqzSFVA/HiFpCzXJq7pNVZMjP46/dgkj5bsngRqO2DGf61OLWP+keWC8d2KxtbDJxY2rW2BzQv072um56kdD43ESsUDmv4HFWCRPUFfhryQcg+IPbJ6rC/q3qmWzTDBVN3TBslwJ045yAZkKdHeYVG+mbGhlHxK04wL5XHWjUhpFsrcvxxTxcAd0DBDWbCW7TzjIeWr+kcAhZNgiUAiX7FS1/f2pqRIIFw0bZlKio5xz2Ehsqub/LrL1XLMye4qDUBjHePECjedFUsxOpOuefm0zwsrdmMHjC2xbA55hv5Lj4OM21gnfA/MicAMmVTwEMBsq+/tLEwTqVV3KDILLGB9+D3j/4=
   file:
-  - src/Puako/puako_${TRAVIS_BRANCH}_linux-x64.tar.gz
-  - src/Puako/puako_${TRAVIS_BRANCH}_rhel-x64.tar.gz
-  - src/Puako/puako_${TRAVIS_BRANCH}_osx-x64.tar.gz
-  - src/Puako/puako_${TRAVIS_BRANCH}_win-x64.tar.gz
+  - puako_${TRAVIS_BRANCH}_linux-x64.tar.gz
+  - puako_${TRAVIS_BRANCH}_rhel-x64.tar.gz
+  - puako_${TRAVIS_BRANCH}_osx-x64.tar.gz
+  - puako_${TRAVIS_BRANCH}_win-x64.zip
   on:
     tags: true
   skip_cleanup: 'true'
+  draft: true
+  prerelease: true
