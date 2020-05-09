@@ -14,48 +14,24 @@ namespace puako.Downloaders
 
         public override async Task<string> PeekVersionAsync()
         {
-            // TODO: Retryable peek version?
-            try
-            {
-                await Prefetch();
-            }
-            catch
-            {
-                return null;
-            }
-
+            await Prefetch();
             return _version;
         }
 
-        public override async Task<DownloadResult> DownloadAsync(string destination)
+        public override async Task<(string version, string suggestedFileName)> DownloadAsync(
+            string destination)
         {
-            try
+            if (_location == null || _version == null)
             {
-                if (_location == null || _version == null)
-                {
-                    await Prefetch();
-                }
-
-                using var srcStream = await HttpClient.GetStreamAsync(_location);
-                using var dstStream = File.Create(destination);
-
-                srcStream.CopyTo(dstStream);
-
-                return new DownloadResult
-                {
-                    SuggestedFileName = _version,
-                    Version = _version,
-                };
+                await Prefetch();
             }
-            catch (Exception ex)
-            {
-                return new DownloadResult
-                {
-                    IsError = true,
-                    IsRetryableError = true,
-                    Exception = ex,
-                };
-            }
+
+            using var srcStream = await HttpClient.GetStreamAsync(_location);
+            using var dstStream = File.Create(destination);
+
+            await srcStream.CopyToAsync(dstStream);
+
+            return (_version, _version);
         }
 
         private async Task Prefetch()

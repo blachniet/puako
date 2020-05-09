@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using puako.Downloaders;
@@ -30,15 +28,12 @@ namespace puako
         {
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
             var history = new JsonHistoryProvider("history.json");
-            var tmpDir = Path.Combine(config.OutputDirectory, ".tmp");
+            var driver = new DownloadDriver(history, config.OutputDirectory);
             var tasks = new List<Task>();
 
-            // Ensure the output directory exists.
-            Directory.CreateDirectory(tmpDir);
-
-            foreach (var resource in config.Resources)
+            foreach (var downloader in config.BuildDownloaders())
             {
-                tasks.Add(HandleResource(resource, config, history, tmpDir));
+                tasks.Add(Download(driver, downloader));
             }
 
             await Task.WhenAll(tasks);
@@ -51,71 +46,27 @@ namespace puako
             return 0;
         }
 
-        private static async Task<DownloadResult> Download(
-            IDownloader downloader, string destination)
+        private static async Task Download(DownloadDriver driver, IDownloader downloader)
         {
-            DownloadResult result = null;
+            Console.Error.WriteLine($"[{downloader.Name}] Downloading...");
 
-            for (var i = 0; i < 3; ++i)
+            try
             {
-                result = await downloader.DownloadAsync(destination);
+                var result = await driver.Download(downloader);
 
-                if (!result.IsError || !result.IsRetryableError)
+                if (result.downloaded)
                 {
-                    return result;
-                }
-            }
-
-            return result;
-        }
-
-        private static async Task HandleResource(
-            Resource resource, Config config, IHistoryProvider history,
-            string tmpDir)
-        {
-            Console.Error.WriteLine($"Downloading '{resource.Name}'...");
-
-            resource.Downloader.Init(_client);
-
-            var version = await resource.Downloader.PeekVersionAsync();
-
-            if (version == null 
-                || !await history.HasDownloadedAsync(resource.Name, version))
-            {
-                var tmpFile = Path.Combine(
-                    tmpDir,
-                    Path.GetRandomFileName()
-                );
-                var result = await Download(resource.Downloader, tmpFile);
-
-                if (!result.IsError)
-                {
-                    // TODO: Handle unset suggestedfilename
-                    File.Move(tmpFile, Path.Combine(
-                        config.OutputDirectory,
-                        result.SuggestedFileName
-                    ));
-                    await history.AddDownloadAsync(resource.Name, result.Version);
-
-                    Console.Error.WriteLine($"Downloaded '{resource.Name}', '{result.Version}'");
+                    Console.Error.WriteLine($"[{downloader.Name}] Downloaded '{result.version}'.");
                 }
                 else
                 {
-                    var sb = new StringBuilder(
-                        $"Error downloading '{resource.Name}'");
-
-                    if (result.Exception != null)
-                    {
-                        sb.AppendLine(result.Exception.Message);
-                        sb.AppendLine(result.Exception.StackTrace);
-                    }
+                    Console.Error.WriteLine($"[{downloader.Name}] Nothing to do. Previously downloaded '{result.version}'.");
                 }
             }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[{downloader.Name}] Error:\n{ex.StackTrace}");
+            }
         }
-
-        private static HttpClient _client = new HttpClient(new HttpClientHandler() 
-        {
-            AllowAutoRedirect = false
-        });
     }
 }
