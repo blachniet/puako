@@ -17,7 +17,8 @@ deploy:
   file:
     - puako_${TRAVIS_BRANCH}_linux-x64.tar.gz
   skip_cleanup: true
-  on.tags: true
+  on:
+    tags: true
   name: ${TRAVIS_BRANCH}
   draft: true
   prerelease: true
