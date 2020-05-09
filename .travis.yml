@@ -14,8 +14,7 @@ script:
 - tar -czf puako_${TRAVIS_BRANCH}_osx-x64.tar.gz -C bin/Release/netcoreapp3.1/osx-x64/publish
   puako
 - dotnet publish -c Release -r "win-x64" -p:PublishSingleFile=true --nologo
-- zip puako_${TRAVIS_BRANCH}_win-x64.zip -j bin/Release/netcoreapp3.1/win-x64/publish
-  puako.exe
+- zip puako_${TRAVIS_BRANCH}_win-x64.zip -j bin/Release/netcoreapp3.1/win-x64/publish/puako.exe
 deploy:
   provider: releases
   api_key:
