@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace puako.Downloaders
+namespace Puako.Downloaders
 {
     internal abstract class BaseDownloader : IDownloader
     {

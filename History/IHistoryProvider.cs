@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace puako.History
+namespace Puako.History
 {
     internal interface IHistoryProvider
     {

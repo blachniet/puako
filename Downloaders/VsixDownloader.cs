@@ -3,9 +3,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using puako.Downloaders;
+using Puako.Downloaders;
 
-namespace puako
+namespace Puako
 {
     internal class VsixDownloader : BaseDownloader
     {

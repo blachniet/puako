@@ -1,9 +1,9 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using puako.Downloaders;
+using Puako.Downloaders;
 
-namespace puako
+namespace Puako
 {
     internal class Resource
     {

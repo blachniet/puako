@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using puako.Downloaders;
-using puako.History;
+using Puako.Downloaders;
+using Puako.History;
 
-namespace puako
+namespace Puako
 {
     class Program
     {

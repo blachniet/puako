@@ -3,10 +3,10 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using puako.Downloaders;
-using puako.History;
+using Puako.Downloaders;
+using Puako.History;
 
-namespace puako
+namespace Puako
 {
     internal class DownloadDriver
     {

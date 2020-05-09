@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using puako.Downloaders;
+using Puako.Downloaders;
 
-namespace puako
+namespace Puako
 {
     internal class Config
     {
