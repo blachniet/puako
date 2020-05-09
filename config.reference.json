@@ -1,0 +1,23 @@
+{
+    "outputDirectory": "/tmp/puako/output",
+    "downloaders": [
+        {
+            "name": "Puppet PDK Windows",
+            "kind": "redirect",
+            "uri": "https://pm.puppet.com/cgi-bin/pdk_download.cgi?dist=win&arch=x64&ver=latest",
+            "versionStrategy": "ContentDisposition"
+        },
+        {
+            "name": "VS Code Windows",
+            "kind": "redirect",
+            "uri": "https://update.code.visualstudio.com/latest/win32-x64-user/stable",
+            "versionStrategy": "UriFilename"
+        },
+        {
+            "name": "VS Code - Docker",
+            "kind": "vsix",
+            "publisher": "ms-azuretools",
+            "id": "vscode-docker"
+        }
+    ]
+}
