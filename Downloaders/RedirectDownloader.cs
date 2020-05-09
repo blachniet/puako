@@ -27,10 +27,13 @@ namespace puako.Downloaders
                 await Prefetch();
             }
 
-            using var srcStream = await HttpClient.GetStreamAsync(_location);
-            using var dstStream = File.Create(destination);
+            using (var resp = await HttpClient.GetAsync(_location))
+            using (var dstStream = File.Create(destination))
+            {
+                resp.EnsureSuccessStatusCode();
 
-            await srcStream.CopyToAsync(dstStream);
+                await resp.Content.CopyToAsync(dstStream);
+            }
 
             return (_version, _version);
         }
