@@ -5,7 +5,7 @@ script:
 - cd src/Puako
 - dotnet --info
 - dotnet publish -c Release -r "linux-x64" -p:PublishSingleFile=true --nologo
-- tar -czf puako_${TRAVIS_BRANCH}_linux-x64.tar.gz -C src/Puako/bin/Release/netcoreapp3.1/linux-x64/publish puako
+- tar -czf puako_${TRAVIS_BRANCH}_linux-x64.tar.gz -C bin/Release/netcoreapp3.1/linux-x64/publish puako
 - dotnet publish -c Release -r "rhel-x64" -p:PublishSingleFile=true --nologo
 - dotnet publish -c Release -r "osx-x64" -p:PublishSingleFile=true --nologo
 - dotnet publish -c Release -r "win-x64" -p:PublishSingleFile=true --nologo
