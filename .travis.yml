@@ -1,0 +1,9 @@
+language: csharp
+mono: none
+dotnet: 3.1.201
+script:
+- cd src/Puako
+- dotnet publish -c Release -r "linux-x64" -p:PublishSingleFile=true
+- dotnet publish -c Release -r "rhel-x64" -p:PublishSingleFile=true
+- dotnet publish -c Release -r "osx-x64" -p:PublishSingleFile=true
+- dotnet publish -c Release -r "win-x64" -p:PublishSingleFile=true
