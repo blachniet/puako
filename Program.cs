@@ -65,7 +65,7 @@ namespace puako
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"[{downloader.Name}] Error:\n{ex.StackTrace}");
+                Console.Error.WriteLine($"[{downloader.Name}] Error:\n{ex.ToString()}\n{ex.StackTrace}");
             }
         }
     }

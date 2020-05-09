@@ -26,7 +26,7 @@ namespace puako
             // Try to take a look at the available version.
             // Give it 3 attempts if exceptions occur.
             string version = null;
-            for (var attempt = 0; attempt < 3; ++attempt)
+            for (var attempt = 1; attempt <= RetryCount; ++attempt)
             {
                 try
                 {
@@ -49,7 +49,7 @@ namespace puako
 
             // Attempt to download 3 times.
             string suggestedFileName = null;
-            for (var attempt = 0; attempt < 3; ++attempt)
+            for (var attempt = 1; attempt <= RetryCount; ++attempt)
             {
                 try
                 {
@@ -58,6 +58,11 @@ namespace puako
                 catch
                 {
                     TryDelete(tempFilePath);
+
+                    if (attempt == RetryCount)
+                    {
+                        throw;
+                    }
                 }
             }
 
@@ -93,6 +98,7 @@ namespace puako
             catch { }
         }
 
+        private const int RetryCount = 3;
         private readonly IHistoryProvider _history;
         private readonly string _outputDirectory;
         private readonly string _tempDirectory;
