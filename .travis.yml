@@ -27,5 +27,6 @@ deploy:
   on:
     tags: true
   skip_cleanup: 'true'
+  name: ${TRAVIS_BRANCH}
   draft: true
   prerelease: true
