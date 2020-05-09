@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace puako.Downloaders
 {
@@ -58,7 +59,8 @@ namespace puako.Downloaders
                     break;
 
                 case VersionStrategyType.UriFilename:
-                    _version = Path.GetFileName(response.Headers.Location.AbsolutePath);
+                    _version = HttpUtility.UrlDecode(
+                        Path.GetFileName(response.Headers.Location.AbsolutePath));
                     break;
                 
                 default:
