@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/netcoreapp3.1/Puako.dll",
+            "program": "${workspaceFolder}/src/Puako/bin/Debug/netcoreapp3.1/Puako.dll",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/src/Puako",
             "console": "internalConsole",
             "stopAtEntry": false
         },
