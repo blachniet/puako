@@ -15,7 +15,7 @@ namespace Puako
 
         public override Task<string> PeekVersionAsync()
         {
-            return null;
+            return Task.FromResult<string>(null);
         }
 
         public override async Task<(string version, string suggestedFileName)> DownloadAsync(string destination)
