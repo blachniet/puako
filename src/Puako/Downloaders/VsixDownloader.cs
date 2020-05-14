@@ -1,6 +1,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Puako.Downloaders;
@@ -25,6 +26,14 @@ namespace Puako
             using (var resp = await HttpClient.GetAsync(uri))
             using (var dstStream = File.Create(destination))
             {
+                if (resp.StatusCode == HttpStatusCode.TooManyRequests)
+                {
+                    throw new TooManyRequestsException
+                    {
+                        RetryAfter = resp.Headers.RetryAfter.Delta,
+                    };
+                }
+
                 resp.EnsureSuccessStatusCode();
 
                 await resp.Content.CopyToAsync(dstStream);

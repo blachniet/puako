@@ -57,8 +57,24 @@ namespace Puako
             {
                 try
                 {
-                    (version, suggestedFileName) = await downloader.DownloadAsync(tempFilePath);
-                    break;
+                    try
+                    {
+                        (version, suggestedFileName) = await downloader.DownloadAsync(tempFilePath);
+                        break;
+                    }
+                    catch (TooManyRequestsException ex)
+                    {
+                        // If the downloader tells us specifically how long to
+                        // wait before retrying, add that to the standard delay.
+                        if (attempt < RetryCount
+                            && ex.RetryAfter.HasValue
+                            && ex.RetryAfter.Value != TimeSpan.Zero)
+                        {
+                            await Task.Delay(ex.RetryAfter.Value);
+                        }
+
+                        throw;
+                    }
                 }
                 catch
                 {
