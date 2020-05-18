@@ -16,14 +16,29 @@ namespace Puako
             foreach (var jobj in Downloaders)
             {
                 var kind = jobj.Value<string>("kind").ToLowerInvariant();
+                var name = jobj.Value<string>("name").ToLowerInvariant();
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    throw new ArgumentException(
+                        $"Missing or invalid name on downloader.\n{jobj.ToString()}");
+                }
+
+                var fullName = $"{kind}/{name}";
+
+                if (!_fullNames.Add(fullName))
+                {
+                    throw new ArgumentException(
+                        $"Duplicate downloader name: {fullName}");
+                }
 
                 switch (kind)
                 {
-                    case "redirect":
+                    case RedirectDownloader.KindValue:
                         yield return jobj.ToObject<RedirectDownloader>();
                         break;
 
-                    case "vsix":
+                    case VsixDownloader.KindValue:
                         yield return jobj.ToObject<VsixDownloader>();
                         break;
 
@@ -34,5 +49,7 @@ namespace Puako
                 }
             }
         }
+
+        private HashSet<string> _fullNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     }
 }

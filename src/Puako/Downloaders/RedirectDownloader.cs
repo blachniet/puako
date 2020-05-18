@@ -9,6 +9,8 @@ namespace Puako.Downloaders
 {
     internal class RedirectDownloader : BaseDownloader
     {
+        public const string KindValue = "redirect";
+
         public Uri Uri { get; set; }
 
         public VersionStrategyType VersionStrategy { get; set; }
