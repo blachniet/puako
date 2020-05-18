@@ -10,6 +10,8 @@ namespace Puako
 {
     internal class VsixDownloader : BaseDownloader
     {
+        public const string KindValue = "vsix";
+
         public string Publisher { get; set; }
 
         public string ID { get; set; }
