@@ -26,15 +26,7 @@ namespace Puako
             using (var resp = await HttpClient.GetAsync(uri))
             using (var dstStream = File.Create(destination))
             {
-                if (resp.StatusCode == HttpStatusCode.TooManyRequests)
-                {
-                    throw new TooManyRequestsException
-                    {
-                        RetryAfter = resp.Headers.RetryAfter.Delta,
-                    };
-                }
-
-                resp.EnsureSuccessStatusCode();
+                resp.EnsureSuccessStatusCodeEx();
 
                 await resp.Content.CopyToAsync(dstStream);
             }
