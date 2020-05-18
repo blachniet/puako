@@ -1,7 +1,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Puako.Downloaders;
@@ -23,12 +23,23 @@ namespace Puako
         {
             var uri = string.Format(UrlTemplate, Publisher, ID);
 
-            using (var resp = await HttpClient.GetAsync(uri))
-            using (var dstStream = File.Create(destination))
+            try
             {
-                resp.EnsureSuccessStatusCodeEx();
+                // Limit the number of concurrent requests to avoid slamming
+                // the service with too many requests all at once.
+                await Semaphore.WaitAsync();
 
-                await resp.Content.CopyToAsync(dstStream);
+                using (var resp = await HttpClient.GetAsync(uri))
+                using (var dstStream = File.Create(destination))
+                {
+                    resp.EnsureSuccessStatusCodeEx();
+
+                    await resp.Content.CopyToAsync(dstStream);
+                }
+            }
+            finally
+            {
+                Semaphore.Release();
             }
 
             var version = ParseVsixVersion(destination);
@@ -57,5 +68,6 @@ namespace Puako
 
         private const string UrlTemplate = "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/{0}/vsextensions/{1}/latest/vspackage";
         private const string FileNameTemplate = "{0}.{1}-{2}.vsix";
+        private static readonly SemaphoreSlim Semaphore = new SemaphoreSlim(2);
     }
 }
