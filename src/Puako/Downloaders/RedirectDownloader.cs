@@ -30,7 +30,7 @@ namespace Puako.Downloaders
             using (var resp = await HttpClient.GetAsync(_location))
             using (var dstStream = File.Create(destination))
             {
-                resp.EnsureSuccessStatusCode();
+                resp.EnsureSuccessStatusCodeEx();
 
                 await resp.Content.CopyToAsync(dstStream);
             }
