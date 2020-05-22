@@ -29,6 +29,13 @@ jobs:
         run: |
           dotnet publish -c Release -r "win-x64" -p:PublishSingleFile=true --nologo src/Puako/Puako.csproj && \
             zip puako_win-x64.zip -j src/Puako/bin/Release/netcoreapp3.1/win-x64/publish/puako.exe
+
+      # Get version, stripping off the 'refs/tags/' prefix
+      # https://github.community/t5/GitHub-Actions/How-to-get-just-the-tag-name/m-p/32167/highlight/true#M1027
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -46,7 +53,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./puako_linux-x64.tar.gz
-          asset_name: puako_${{ github.ref }}_linux-x64.tar.gz
+          asset_name: puako_${{ steps.get_version.outputs.VERSION }}_linux-x64.tar.gz
           asset_content_type: application/gzip
       - name: Upload RHEL Release Asset
         uses: actions/upload-release-asset@v1
@@ -55,7 +62,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./puako_rhel-x64.tar.gz
-          asset_name: puako_${{ github.ref }}_rhel-x64.tar.gz
+          asset_name: puako_${{ steps.get_version.outputs.VERSION }}_rhel-x64.tar.gz
           asset_content_type: application/gzip
       - name: Upload OSX Release Asset
         uses: actions/upload-release-asset@v1
@@ -64,7 +71,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./puako_osx-x64.tar.gz
-          asset_name: puako_${{ github.ref }}_osx-x64.tar.gz
+          asset_name: puako_${{ steps.get_version.outputs.VERSION }}_osx-x64.tar.gz
           asset_content_type: application/gzip
       - name: Upload Windows Release Asset
         uses: actions/upload-release-asset@v1
@@ -73,5 +80,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./puako_win-x64.zip
-          asset_name: puako_${{ github.ref }}_win-x64.zip
+          asset_name: puako_${{ steps.get_version.outputs.VERSION }}_win-x64.zip
           asset_content_type: application/zip
