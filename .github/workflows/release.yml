@@ -46,7 +46,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./puako_linux-x64.tar.gz
-          asset_name: puako_${{ steps.create_release.outputs.release_name }}_linux-x64.tar.gz
+          asset_name: puako_${{ github.ref }}_linux-x64.tar.gz
           asset_content_type: application/gzip
       - name: Upload RHEL Release Asset
         uses: actions/upload-release-asset@v1
