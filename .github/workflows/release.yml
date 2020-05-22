@@ -76,6 +76,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./puako_win-x64.tar.gz
-          asset_name: puako_${{ github.ref }}_win-x64.tar.gz
-          asset_content_type: application/gzip
+          asset_path: ./puako_win-x64.zip
+          asset_name: puako_${{ github.ref }}_win-x64.zip
+          asset_content_type: application/zip
