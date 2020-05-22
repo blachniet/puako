@@ -52,4 +52,5 @@ jobs:
           zip artifacts/puako_win-x64.zip -j src/Puako/bin/Release/netcoreapp3.1/win-x64/publish/puako.exe
     - uses: actions/upload-artifact@v2
       with:
+        name: windows-artifact
         path: artifacts/puako_win-x64.zip
