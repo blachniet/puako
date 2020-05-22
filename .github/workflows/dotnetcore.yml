@@ -23,31 +23,25 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
       working-directory: src/Puako/
+    - name: Make an artifacts directory
+      run: mkdir artifacts
     - name: Publish Linux
       run: |
         dotnet publish -c Release -r "linux-x64" -p:PublishSingleFile=true --nologo && \
-          tar -czf puako_linux-x64.tar.gz -C bin/Release/netcoreapp3.1/linux-x64/publish puako
-      working-directory: src/Puako/
+          tar -czf artifacts/puako_linux-x64.tar.gz -C src/Puako/bin/Release/netcoreapp3.1/linux-x64/publish puako
     - name: Publish RHEL
       run: |
         dotnet publish -c Release -r "rhel-x64" -p:PublishSingleFile=true --nologo && \
-          tar -czf puako_rhel-x64.tar.gz -C bin/Release/netcoreapp3.1/rhel-x64/publish puako
-      working-directory: src/Puako/
+          tar -czf artifacts/puako_rhel-x64.tar.gz -C src/Puako/bin/Release/netcoreapp3.1/rhel-x64/publish puako
     - name: Publish OSX
       run: |
         dotnet publish -c Release -r "osx-x64" -p:PublishSingleFile=true --nologo && \
-          tar -czf puako_osx-x64.tar.gz -C bin/Release/netcoreapp3.1/osx-x64/publish puako
-      working-directory: src/Puako/
+          tar -czf artifacts/puako_osx-x64.tar.gz -C src/Puako/bin/Release/netcoreapp3.1/osx-x64/publish puako
     - name: Publish Windows
       run: |
         dotnet publish -c Release -r "win-x64" -p:PublishSingleFile=true --nologo && \
-          zip puako_win-x64.zip -j bin/Release/netcoreapp3.1/win-x64/publish/puako.exe
-      working-directory: src/Puako/
-    - name: Upload TAR Build Artifacts
+          zip artifacts/puako_win-x64.zip -j src/Puako/bin/Release/netcoreapp3.1/win-x64/publish/puako.exe
+    - name: Upload Build Artifacts
       uses: actions/upload-artifact@v2
       with:
-        path: src/Puako/bin/Release/netcoreapp3.1/*/publish/*.tar
-    - name: Upload ZIP Build Artfiacts
-      uses: actions/upload-artifact@v2
-      with:
-        path: src/Puako/bin/Release/netcoreapp3.1/*/publish/*.zip
+        path: artifacts/*
