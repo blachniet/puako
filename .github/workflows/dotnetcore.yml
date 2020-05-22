@@ -23,10 +23,6 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
       working-directory: src/Puako/
-    # No tests yet :(
-    #- name: Test
-    #  run: dotnet test --no-restore --verbosity normal
-    #  working-directory: src/Puako/
     - name: Publish Linux
       run: |
         dotnet publish -c Release -r "linux-x64" -p:PublishSingleFile=true --nologo && \
@@ -47,3 +43,11 @@ jobs:
         dotnet publish -c Release -r "win-x64" -p:PublishSingleFile=true --nologo && \
           zip puako_win-x64.zip -j bin/Release/netcoreapp3.1/win-x64/publish/puako.exe
       working-directory: src/Puako/
+    - name: Upload TAR Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        path: src/Puako/bin/Release/netcoreapp3.1/*/publish/*.tar
+    - name: Upload ZIP Build Artfiacts
+      uses: actions/upload-artifact@v2
+      with:
+        path: src/Puako/bin/Release/netcoreapp3.1/*/publish/*.zip
