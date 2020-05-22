@@ -30,6 +30,7 @@ jobs:
           dotnet publish -c Release -r "win-x64" -p:PublishSingleFile=true --nologo src/Puako/Puako.csproj && \
             zip puako_win-x64.zip -j src/Puako/bin/Release/netcoreapp3.1/win-x64/publish/puako.exe
       - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -39,6 +40,7 @@ jobs:
           draft: true
           prerelease: true
       - name: Upload Linux Release Asset
+        id: upload-release-asset-linux
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -48,6 +50,7 @@ jobs:
           asset_name: puako_${{ github.ref }}_linux-x64.tar.gz
           asset_content_type: application/gzip
       - name: Upload RHEL Release Asset
+        id: upload-release-asset-rhel
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -57,6 +60,7 @@ jobs:
           asset_name: puako_${{ github.ref }}_rhel-x64.tar.gz
           asset_content_type: application/gzip
       - name: Upload OSX Release Asset
+        id: upload-release-asset-osx
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -66,6 +70,7 @@ jobs:
           asset_name: puako_${{ github.ref }}_osx-x64.tar.gz
           asset_content_type: application/gzip
       - name: Upload Windows Release Asset
+        id: upload-release-asset-win
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
