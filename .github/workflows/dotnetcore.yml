@@ -27,19 +27,19 @@ jobs:
       run: mkdir artifacts
     - name: Publish Linux
       run: |
-        dotnet publish -c Release -r "linux-x64" -p:PublishSingleFile=true --nologo src/Puako/Puako.csproj && \
+        dotnet publish -c Release -r "linux-x64" -p:PublishSingleFile=true --no-build --nologo src/Puako/Puako.csproj && \
           tar -czf artifacts/puako_linux-x64.tar.gz -C src/Puako/bin/Release/netcoreapp3.1/linux-x64/publish puako
     - name: Publish RHEL
       run: |
-        dotnet publish -c Release -r "rhel-x64" -p:PublishSingleFile=true --nologo src/Puako/Puako.csproj && \
+        dotnet publish -c Release -r "rhel-x64" -p:PublishSingleFile=true --no-build --nologo src/Puako/Puako.csproj && \
           tar -czf artifacts/puako_rhel-x64.tar.gz -C src/Puako/bin/Release/netcoreapp3.1/rhel-x64/publish puako
     - name: Publish OSX
       run: |
-        dotnet publish -c Release -r "osx-x64" -p:PublishSingleFile=true --nologo src/Puako/Puako.csproj && \
+        dotnet publish -c Release -r "osx-x64" -p:PublishSingleFile=true --no-build --nologo src/Puako/Puako.csproj && \
           tar -czf artifacts/puako_osx-x64.tar.gz -C src/Puako/bin/Release/netcoreapp3.1/osx-x64/publish puako
     - name: Publish Windows
       run: |
-        dotnet publish -c Release -r "win-x64" -p:PublishSingleFile=true --nologo src/Puako/Puako.csproj && \
+        dotnet publish -c Release -r "win-x64" -p:PublishSingleFile=true --no-build --nologo src/Puako/Puako.csproj && \
           zip artifacts/puako_win-x64.zip -j src/Puako/bin/Release/netcoreapp3.1/win-x64/publish/puako.exe
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v2
