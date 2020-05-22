@@ -40,7 +40,7 @@ jobs:
     - name: Publish OSX
       run: |
         dotnet publish -c Release -r "osx-x64" -p:PublishSingleFile=true --nologo && \
-          tar -czf puako_osx-x64.tar.gz -C bin/Release/netcoreapp3.1/osx-x64/publish
+          tar -czf puako_osx-x64.tar.gz -C bin/Release/netcoreapp3.1/osx-x64/publish puako
       working-directory: src/Puako/
     - name: Publish Windows
       run: |
