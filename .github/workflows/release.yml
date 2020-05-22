@@ -39,13 +39,43 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: true
           prerelease: true
-      - name: Upload Release Asset
+      - name: Upload Linux Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./puako_linux-x64.tar.gz
-          asset_name: puako_linux-x64.tar.gz
+          asset_name: puako_${{ github.ref }}_linux-x64.tar.gz
+          asset_content_type: application/gzip
+      - name: Upload RHEL Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./puako_rhel-x64.tar.gz
+          asset_name: puako_${{ github.ref }}_rhel-x64.tar.gz
+          asset_content_type: application/gzip
+      - name: Upload OSX Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./puako_osx-x64.tar.gz
+          asset_name: puako_${{ github.ref }}_osx-x64.tar.gz
+          asset_content_type: application/gzip
+      - name: Upload Windows Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./puako_win-x64.tar.gz
+          asset_name: puako_${{ github.ref }}_win-x64.tar.gz
           asset_content_type: application/gzip
